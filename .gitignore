@@ -1,0 +1,14 @@
+# 敏感数据：OA 登录会话（含 cookie 凭证），绝不提交
+data/
+*.json
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# 调试/临时文件
+*.log
+*.tmp
