@@ -9,14 +9,13 @@
 Skill 不携带任何机构私有配置。新机器/新环境按以下顺序操作：
 
 1. 把本文件夹（Skill 包）放到目标机器。
-2. 运行 `python install.py`（Windows 可用 `py -3 install.py`）。脚本会自动：
-   - 从 `config.example.json` 生成 `config.json`；
+2. 准备本机配置 `config.json`（放置真实机构参数，不入仓库）：
+   - `oa.portal` / `oa.login_url` / `oa.reimburse_new_url` → 贵司 OA 门户、统一认证地址、报销流程模板地址；
+   - `company` → 报销公司名；`fee_type` → 默认费用类型；
+   - `project`、`invoice_dir` 默认可为 null，运行时用 `--project` 与票据目录参数指定。
+3. 运行 `python install.py`（Windows 可用 `py -3 install.py`）。脚本会自动：
    - 检查 Python 与 Chrome、安装 `playwright` + `pypdf`；
    - 引导登录 OA 并保存会话到本机 `data/oa_state.json`。
-3. 编辑 `config.json`，替换占位符：
-   - `oa.portal` / `oa.login_url` / `oa.reimburse_new_url` 中的 `OA_HOST`、`SSO_HOST`、`TEMPLATE_ID` → 贵司 OA 门户、统一认证地址、报销流程模板 ID；
-   - `invoice_dir` → 票据目录（同批次发票与凭证所在文件夹）；
-   - `project` → 报销项目名（也可运行时 `--project` 传入）。
 4. 重新运行 `python install.py` 完成登录与自检；看到「会话有效」即配置完成。
 
 > 会话文件 `data/oa_state.json` 只保存在本机，不纳入分发、不提交仓库。
@@ -61,7 +60,7 @@ Windows 下把 `python` 换成 `py -3` 或本机 Python 路径。
 
 ## 五、配置
 
-模板：`config.example.json`；本机配置：`config.json`（install.py 生成，不入仓库）。
+本机配置：`config.json`（含真实机构参数，不入仓库，不入分发）。
 配置优先级：命令行参数 > `config.json` > 人工确认。
 
 ## 六、反馈
@@ -76,8 +75,8 @@ Windows 下把 `python` 换成 `py -3` 或本机 Python 路径。
 oa-baoxiao/
 ├── SKILL.md
 ├── README.md
-├── config.example.json   # 配置模板（占位符，需按机构填写）
-├── install.py            # 环境配置器（生成 config.json / 装依赖 / 登录 / 自检）
+├── config.json           # 本机配置（含真实机构参数，不入仓库）
+├── install.py            # 环境配置器（装依赖 / 登录 / 自检）
 ├── data/                 # 本机运行数据（oa_state.json 会话，不入分发）
 └── scripts/
     ├── rail_invoice_parse.py

@@ -23,7 +23,6 @@ install.py - 差旅费报销自动化 Skill 环境配置器（跨平台：macOS 
 import os
 import sys
 import json
-import shutil
 import subprocess
 import platform
 
@@ -31,7 +30,6 @@ SKILL_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SKILL_DIR, "data")
 STATE_FILE = os.path.join(DATA_DIR, "oa_state.json")
 CONFIG_FILE = os.path.join(SKILL_DIR, "config.json")
-EXAMPLE_FILE = os.path.join(SKILL_DIR, "config.example.json")
 
 OK = "\033[92m[OK]\033[0m"
 WARN = "\033[93m[!!]\033[0m"
@@ -144,29 +142,15 @@ def oa_hostname(cfg):
 
 def ensure_config():
     """环境配置第 0 步：确保 config.json 存在且占位符已替换。
-    缺失时从 config.example.json 复制生成，并提示用户填写本机构 OA 参数。
-    未完成替换返回 False（后续登录/自检跳过，先配置再运行）。"""
+    不再使用 config.example.json 模板——skill 直接读取 config.json。
+    缺少 config.json 或仍含占位符时返回 False（后续登录/自检跳过，先配置再运行）。"""
     if not os.path.exists(CONFIG_FILE):
-        if not os.path.exists(EXAMPLE_FILE):
-            print(c("缺少 config.json 且缺少 config.example.json 模板，无法自动生成", "err"))
-            return False
-        shutil.copy2(EXAMPLE_FILE, CONFIG_FILE)
-        print(c(f"已由 config.example.json 生成: {CONFIG_FILE}", "ok"))
-        print(c("请先用文本编辑器打开 config.json，完成以下替换：", "warn"))
-        print(c("  1) OA_HOST / SSO_HOST / TEMPLATE_ID 占位符 → 贵司 OA 门户、统一认证与报销流程模板地址", "warn"))
-        print(c("  2) invoice_dir → 票据目录（同一批次发票及其它凭证所在文件夹）", "warn"))
-        print(c("  3) project → 报销项目名（也可运行时用 --project 传入）", "warn"))
-        print(c("填写完成后重新运行本安装器即可继续；不填写则无法登录与报销。", "warn"))
-        try:
-            cfg = json.load(open(CONFIG_FILE, encoding="utf-8"))
-        except Exception:
-            cfg = {}
-        if not cfg or "OA_HOST" in oa_portal(cfg) or not oa_portal(cfg):
-            return False
-    # 已存在但仍是占位符（可能由旧 example 复制而来）
+        print(c(f"缺少 {CONFIG_FILE}，无法自动生成。请直接提供一份填写好本机构 OA 参数的 config.json（含 oa 门户/SSO/报销模板地址）。", "err"))
+        return False
     try:
         cfg = load_config()
     except Exception:
+        print(c("config.json 解析失败，请检查其是否为合法 JSON", "err"))
         return False
     if "OA_HOST" in oa_portal(cfg) or "SSO_HOST" in json.dumps(cfg.get("oa", {}), ensure_ascii=False):
         print(c("config.json 仍含 OA_HOST/SSO_HOST 占位符，请先替换为贵司实际地址", "warn"))
