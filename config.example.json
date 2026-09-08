@@ -1,0 +1,13 @@
+{
+  "oa": {
+    "portal": "https://OA_HOST/sys/portal/page.jsp",
+    "login_url": "https://SSO_HOST/uaa/login",
+    "reimburse_new_url": "https://OA_HOST/km/review/km_review_main/kmReviewMain.do?method=add&fdTemplateId=TEMPLATE_ID&fdTemplate=TEMPLATE_ID"
+  },
+  "company": "公司名称(如：XX股份有限公司)",
+  "fee_type": "火车/高铁费用",
+  "project": null,
+  "trip_keyword": null,
+  "invoice_dir": null,
+  "submit_mode": "manual"
+}

@@ -9,7 +9,7 @@
 Skill 不携带任何机构私有配置。新机器/新环境按以下顺序操作：
 
 1. 把本文件夹（Skill 包）放到目标机器。
-2. 准备本机配置 `config.json`（放置真实机构参数，不入仓库）：
+2. 准备本机配置 `config.json`（放置真实机构参数，不入仓库）：字段结构可参照仓库内的 `config.example.json`（匿名示例，`OA_HOST`/`SSO_HOST`/`TEMPLATE_ID` 为占位符）：
    - `oa.portal` / `oa.login_url` / `oa.reimburse_new_url` → 贵司 OA 门户、统一认证地址、报销流程模板地址；
    - `company` → 报销公司名；`fee_type` → 默认费用类型；
    - `project`、`invoice_dir` 默认可为 null，运行时用 `--project` 与票据目录参数指定。
@@ -60,7 +60,7 @@ Windows 下把 `python` 换成 `py -3` 或本机 Python 路径。
 
 ## 五、配置
 
-本机配置：`config.json`（含真实机构参数，不入仓库，不入分发）。
+本机配置：`config.json`（含真实机构参数，不入仓库，不入分发）；`config.example.json` 为匿名示例（字段结构参考，install.py 不依赖它）。
 配置优先级：命令行参数 > `config.json` > 人工确认。
 
 ## 六、反馈
@@ -76,6 +76,7 @@ oa-baoxiao/
 ├── SKILL.md
 ├── README.md
 ├── config.json           # 本机配置（含真实机构参数，不入仓库）
+├── config.example.json   # 匿名示例（字段结构参考，占位符，可发布）
 ├── install.py            # 环境配置器（装依赖 / 登录 / 自检）
 ├── data/                 # 本机运行数据（oa_state.json 会话，不入分发）
 └── scripts/

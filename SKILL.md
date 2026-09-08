@@ -16,7 +16,7 @@ agent_created: true
 Skill 本体不含任何机构私有的 `config.json`。每个新环境首次使用前必须完成环境配置，
 后续每次报销直接走「运行流程」，不再重复配置。
 
-1. 提供本机配置 `config.json`（放真实机构参数，不入仓库，不入分发）：
+1. 提供本机配置 `config.json`（放真实机构参数，不入仓库，不入分发）：字段结构可参照 `config.example.json`（匿名示例，`OA_HOST`/`SSO_HOST`/`TEMPLATE_ID` 为占位符）：
    - `oa.portal` / `oa.login_url` / `oa.reimburse_new_url`：OA 门户、统一认证登录页、报销流程模板地址；
    - `company` / `fee_type`：报销公司名与默认费用类型；
    - `project`、`invoice_dir`：可为 null，运行时用 `--project` 与票据目录参数指定。
@@ -106,7 +106,7 @@ OA 登录会话必须保存为 `data/oa_state.json`（Playwright storage_state�
 
 ## 配置与运行
 
-- 配置文件：`config.json`（本机提供，含真实机构参数，不入仓库、不入分发）。
+- 配置文件：`config.json`（本机提供，含真实机构参数，不入仓库、不入分发）；`config.example.json` 为匿名示例（字段结构参考，install.py 不依赖它）。
 - 配置优先级：命令行参数 > `config.json` > 人工确认。
 - 批量运行：`python scripts/fill_oa_batch.py "票据目录" --project "项目名"`
 - 单票运行：`python scripts/fill_oa_auto.py "发票.pdf" --project "项目名"`
